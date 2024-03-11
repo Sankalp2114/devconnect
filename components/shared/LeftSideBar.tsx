@@ -1,0 +1,50 @@
+"use client";
+
+import { sidebarLinks } from "@/constants/index";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import { OrganizationSwitcher, SignOutButton, SignedIn } from "@clerk/nextjs";
+import { LogOut } from "lucide-react";
+
+function LeftSideBar() {
+  const router = useRouter();
+  const pathName = usePathname();
+
+  return (
+    <section className="custom-scrollbar leftsidebar">
+      <div className="flex w-full flex-1 flex-col gap-6 px-6">
+        {sidebarLinks.map((link) => {
+          const isActive =
+            (pathName.includes(link.route) && link.route.length > 1) ||
+            pathName === link.route;
+
+          return (
+            <Link
+              href={link.route}
+              key={link.label}
+              className={`leftsidebar_link rounded-full p-4 ${
+                isActive && "bg-gradient-radial lg:bg-primary-500"
+              }`}
+            >
+              {link.icon}
+              <p className="text-light-1 max-lg:hidden">{link.label}</p>
+            </Link>
+          );
+        })}
+      </div>
+      <div className="mt-10 ps-6">
+        <SignedIn>
+          <SignOutButton signOutCallback={() => router.push("sign-in")}>
+            <div className="flex cursor-pointer gap-4 p-4">
+              <LogOut color="white" />
+              <p className="text-light-2 max-lg:hidden">Logout</p>
+            </div>
+          </SignOutButton>
+        </SignedIn>
+      </div>
+    </section>
+  );
+}
+
+export default LeftSideBar;
