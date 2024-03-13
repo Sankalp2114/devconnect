@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { OrganizationSwitcher, SignOutButton, SignedIn } from "@clerk/nextjs";
 import { LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { dark } from "@clerk/themes";
 
 function TopBar() {
+  const router = useRouter();
   return (
     <nav className="topbar">
       <Link href={"/"} className="flex items-center gap-2">
@@ -15,7 +20,7 @@ function TopBar() {
       <div className="flex items-center gap-1">
         <div className="block md:hidden ">
           <SignedIn>
-            <SignOutButton>
+            <SignOutButton signOutCallback={() => router.push("/sign-in")}>
               <div className="flex cursor-pointer ">
                 <LogOut color="white" />
               </div>
@@ -24,6 +29,7 @@ function TopBar() {
         </div>
         <OrganizationSwitcher
           appearance={{
+            baseTheme: dark,
             elements: {
               organizationSwitcherTrigger: "py-2 px-4",
             },
