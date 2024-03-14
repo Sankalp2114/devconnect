@@ -20,6 +20,9 @@ import Image from "next/image";
 import { CircleUser } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { Textarea } from "../ui/textarea";
+import { profile } from "console";
+import { isBase64Image } from "@/lib/utils";
+import { useUploadThing } from "@/lib/uploadthing";
 
 interface AccountProfileProps {
   user: {
@@ -35,6 +38,7 @@ interface AccountProfileProps {
 
 const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
   const [files, setFiles] = useState<File[]>([]);
+  const { startUpload } = useUploadThing("media");
 
   const form = useForm({
     resolver: zodResolver(UserValidation),
@@ -53,18 +57,34 @@ const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
     e.preventDefault();
     const fileReader = new FileReader();
 
-    if (e.target.files && e.target.isDefaultNamespace.length > 1) {
-      {
-        const file = e.target.files[0];
-      }
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setFiles(Array.from(e.target.files));
+
+      if (!file.type.includes("image")) return;
+
+      fileReader.onload = async (event) => {
+        const imageDataUrl = event.target?.result?.toString() || "";
+        fieldChnage(imageDataUrl);
+      };
+
+      fileReader.readAsDataURL(file);
     }
   };
 
-  function onSubmit(values: z.infer<typeof UserValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof UserValidation>) => {
+    const blob = values.profile_photo;
+
+    const hasImageChanged = isBase64Image(blob);
+
+    if (hasImageChanged) {
+      const imgRes = await startUpload(files);
+
+      if (imgRes && imgRes[0].url) {
+        values.profile_photo = imgRes[0].url;
+      }
+    }
+  };
 
   return (
     <Form {...form}>
