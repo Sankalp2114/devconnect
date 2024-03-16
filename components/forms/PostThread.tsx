@@ -22,6 +22,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { updateUser } from "@/lib/actions/user.actions";
 import { ThreadValidation } from "@/lib/validations/thread";
+import { createThread } from "@/lib/actions/thread.action";
 interface PostThreadProps {
   user: {
     id: string;
@@ -46,12 +47,21 @@ function PostThread({ userId }: { userId: string }) {
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+    await createThread({
+      text: values.thread,
+      author: userId,
+      communityId: null,
+      path: pathname,
+    });
+
+    router.push("/");
+  };
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col justify-start gap-10"
+        className="mt-10 flex flex-col justify-start gap-10"
       >
         <FormField
           control={form.control}
@@ -59,7 +69,7 @@ function PostThread({ userId }: { userId: string }) {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">
-                What's on your mind? :
+                What's on your mind?
               </FormLabel>
               <FormControl className="border border-dark-4 bg-dark-3 text-light-1 no-focus">
                 <Textarea rows={15} placeholder="..." {...field} />
@@ -68,6 +78,9 @@ function PostThread({ userId }: { userId: string }) {
             </FormItem>
           )}
         />
+        <Button type="submit" className="bg-primary-500">
+          Post
+        </Button>
       </form>
     </Form>
   );
