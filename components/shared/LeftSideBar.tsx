@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { OrganizationSwitcher, SignOutButton, SignedIn } from "@clerk/nextjs";
-import { LogOut } from "lucide-react";
+import { FileCode2, LogOut } from "lucide-react";
 
 function LeftSideBar() {
   const router = useRouter();
@@ -32,6 +32,14 @@ function LeftSideBar() {
             </Link>
           );
         })}
+        <Link
+          href="https://codesnap-lac.vercel.app"
+          target="_blank"
+          className={`leftsidebar_link rounded-full p-4`}
+        >
+          <FileCode2 color="white" />
+          <p className="text-light-1 max-lg:hidden">CodeSnap</p>
+        </Link>
       </div>
       <div className="mt-10 ps-6">
         <SignedIn>
