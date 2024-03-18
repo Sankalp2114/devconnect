@@ -2,6 +2,7 @@ import { fetchPosts } from "@/lib/actions/thread.action";
 import { UserButton } from "@clerk/nextjs";
 import { User } from "lucide-react";
 import { currentUser } from "@clerk/nextjs";
+import ThreadCard from "@/components/cards/ThreadCard";
 
 export default async function Home() {
   const result = await fetchPosts(1, 30);
@@ -19,7 +20,7 @@ export default async function Home() {
               <ThreadCard
                 key={post.id}
                 id={post.id}
-                currentUserId={user?.id}
+                currentUserId={user?.id || ""}
                 parentId={post.parentId}
                 content={post.text}
                 author={post.author}
