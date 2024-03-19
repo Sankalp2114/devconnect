@@ -1,6 +1,8 @@
+import { fetchLikedPosts, likePost } from "@/lib/actions/thread.action";
 import { Heart, MessageCircleMore, Repeat2, Share2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import Like from "../buttons/Like";
 
 interface ThreadCardProps {
   id: string;
@@ -24,6 +26,7 @@ interface ThreadCardProps {
     };
   }[];
   isComment?: boolean;
+  userDbId: string;
 }
 
 const ThreadCard = ({
@@ -36,11 +39,27 @@ const ThreadCard = ({
   createdAt,
   comments,
   isComment,
+  userDbId,
 }: ThreadCardProps) => {
+  // const handleLikeClick = async () => {
+  //   await likePost(id, currentUserId);
+  // };
+  // const handleLike = async (id: string, currentUserId: string) => {
+  //   await likePost(id, currentUserId);
+  // };
+  let isLiked = false;
+  const getLikedPosts = async (currentUserId: string) => {
+    let likedPosts = await fetchLikedPosts(currentUserId);
+    if (likedPosts.includes(id)) {
+      isLiked = true;
+    } else {
+      isLiked = false;
+    }
+  };
   return (
     <article
-      className={`flex w-full flex-col rounded ${
-        isComment ? "px-2 xs:px-7" : "bg-dark-1 p-7"
+      className={`flex w-full flex-col rounded-xl ${
+        isComment ? "px-2 xs:px-7" : "bg-dark-2 p-7"
       }`}
     >
       <div className="flex items-start justify-between">
@@ -66,12 +85,7 @@ const ThreadCard = ({
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
             <div className="mt-5 flex flex-col gap-3">
               <div className="flex gap-3.5">
-                <Heart
-                  width={24}
-                  height={24}
-                  className="cursor-pointer"
-                  color="gray"
-                />
+                <Like id={id} currentUserId={userDbId} />
                 <Link href={`/thread/${id}`}>
                   <MessageCircleMore
                     width={24}

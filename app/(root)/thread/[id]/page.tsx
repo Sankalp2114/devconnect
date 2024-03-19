@@ -23,6 +23,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           content={post.text}
           author={post.author}
           community={post.community}
+          userDbId={userInfo?._id}
           createdAt={post.createdAt}
           comments={post.children}
         />
@@ -47,6 +48,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             createdAt={child.createdAt}
             comments={child.children}
             isComment
+            userDbId={userInfo._id}
           />
         ))}
       </div>

@@ -12,6 +12,12 @@ const userSchema = new mongoose.Schema({
       ref: "Thread",
     },
   ],
+  likedPosts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Thread",
+    },
+  ],
   onboarded: { type: Boolean, default: false },
   communities: [
     {

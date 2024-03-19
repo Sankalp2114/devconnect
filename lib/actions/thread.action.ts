@@ -130,3 +130,34 @@ export async function addComment(
     throw new Error(`error postion comment: ${error.message} `);
   }
 }
+
+export async function likePost(threadId: string, userId: string) {
+  connectToDB();
+  try {
+    const post = await Thread.findById(threadId);
+    if (!post) throw new Error("Post not found");
+    console.log(userId);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { likedPosts: threadId } },
+      { new: true }
+    );
+
+    return updatedUser;
+  } catch (error: any) {
+    throw new Error(`error postion comment: ${error.message} `);
+  }
+}
+
+export async function fetchLikedPosts(userId: string) {
+  connectToDB();
+  try {
+    const user = await User.findOne({ id: userId });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user.likedPosts;
+  } catch (error: any) {
+    throw new Error(`Error fetching liked posts: ${error.message}`);
+  }
+}

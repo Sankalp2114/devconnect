@@ -3,11 +3,14 @@ import { UserButton } from "@clerk/nextjs";
 import { User } from "lucide-react";
 import { currentUser } from "@clerk/nextjs";
 import ThreadCard from "@/components/cards/ThreadCard";
+import { fetchUser } from "@/lib/actions/user.actions";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const result = await fetchPosts(1, 30);
   const user = await currentUser();
-
+  if (!user) redirect("/sign-in");
+  const userInfo = await fetchUser(user.id);
   return (
     <>
       <h1 className="head-text text-left">Home</h1>
@@ -27,6 +30,7 @@ export default async function Home() {
                 community={post.community}
                 createdAt={post.createdAt}
                 comments={post.children}
+                userDbId={userInfo._id}
               />
             ))}
           </>
