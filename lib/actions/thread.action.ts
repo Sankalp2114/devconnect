@@ -81,7 +81,7 @@ export async function fetchPostById(id: string) {
           {
             path: "author",
             model: User,
-            select: "-id id name parentId image",
+            select: "_id id name parentId image",
           },
           {
             path: "children",

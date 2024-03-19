@@ -8,7 +8,5 @@ export const ThreadValidation = z.object({
 });
 
 export const CommentValidation = z.object({
-  thread: z
-    .string()
-    .min(3, { message: "length is too short to upload minimum 3 characters" }),
+  thread: z.string().min(1, { message: "comment cannot be empty" }),
 });
