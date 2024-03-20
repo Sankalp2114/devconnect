@@ -9,16 +9,14 @@ interface LikeProps {
   id: string;
   currentUserId: string;
   isLiked: boolean;
-  path: string;
 }
 
-async function Like({ id, currentUserId, isLiked, path }: LikeProps) {
+async function Like({ id, currentUserId, isLiked }: LikeProps) {
   const router = useRouter();
 
-  //   const userInfo = await fetchUser(currentUserId);
   const handleLikeClick = async () => {
     if (isLiked) {
-      await dislikePost(id, currentUserId, path); // Assuming there's a function to dislike a post
+      await dislikePost(id, currentUserId);
     } else {
       await likePost(id, currentUserId);
     }

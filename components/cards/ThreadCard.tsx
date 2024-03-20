@@ -42,14 +42,7 @@ const ThreadCard = async ({
   isComment,
   userDbId,
 }: ThreadCardProps) => {
-  // const handleLikeClick = async () => {
-  //   await likePost(id, currentUserId);
-  // };
-  // const handleLike = async (id: string, currentUserId: string) => {
-  //   await likePost(id, currentUserId);
-  // };
   let isLiked = false;
-  const pathname = usePathname();
 
   try {
     let likedPosts = await fetchLikedPosts(userDbId);
@@ -86,12 +79,7 @@ const ThreadCard = async ({
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
             <div className="mt-5 flex flex-col gap-3">
               <div className="flex gap-3.5">
-                <Like
-                  id={id}
-                  currentUserId={userDbId}
-                  isLiked={isLiked}
-                  path={pathname}
-                />
+                <Like id={id} currentUserId={userDbId} isLiked={isLiked} />
                 <Link href={`/thread/${id}`}>
                   <MessageCircleMore
                     width={24}

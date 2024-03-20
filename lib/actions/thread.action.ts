@@ -160,11 +160,7 @@ export async function fetchLikedPosts(userId: string) {
     throw new Error(`Error fetching liked posts: ${error.message}`);
   }
 }
-export async function dislikePost(
-  threadId: string,
-  userId: string,
-  path: string
-) {
+export async function dislikePost(threadId: string, userId: string) {
   connectToDB();
   try {
     const post = await Thread.findById(threadId);
@@ -175,7 +171,6 @@ export async function dislikePost(
       { $pull: { likedPosts: threadId } },
       { new: true }
     );
-    revalidatePath(path);
 
     return updatedUser;
   } catch (error: any) {
