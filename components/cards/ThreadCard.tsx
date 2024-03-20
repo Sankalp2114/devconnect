@@ -3,6 +3,7 @@ import { Heart, MessageCircleMore, Repeat2, Share2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Like from "../buttons/Like";
+import { usePathname } from "next/navigation";
 
 interface ThreadCardProps {
   id: string;
@@ -29,7 +30,7 @@ interface ThreadCardProps {
   userDbId: string;
 }
 
-const ThreadCard = ({
+const ThreadCard = async ({
   id,
   currentUserId,
   parentId,
@@ -48,14 +49,14 @@ const ThreadCard = ({
   //   await likePost(id, currentUserId);
   // };
   let isLiked = false;
-  const getLikedPosts = async (currentUserId: string) => {
-    let likedPosts = await fetchLikedPosts(currentUserId);
-    if (likedPosts.includes(id)) {
-      isLiked = true;
-    } else {
-      isLiked = false;
-    }
-  };
+  const pathname = usePathname();
+
+  try {
+    let likedPosts = await fetchLikedPosts(userDbId);
+    isLiked = likedPosts.includes(id);
+  } catch (error) {
+    console.error("Error fetching liked posts:", error);
+  }
   return (
     <article
       className={`flex w-full flex-col rounded-xl ${
@@ -85,7 +86,12 @@ const ThreadCard = ({
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
             <div className="mt-5 flex flex-col gap-3">
               <div className="flex gap-3.5">
-                <Like id={id} currentUserId={userDbId} />
+                <Like
+                  id={id}
+                  currentUserId={userDbId}
+                  isLiked={isLiked}
+                  path={pathname}
+                />
                 <Link href={`/thread/${id}`}>
                   <MessageCircleMore
                     width={24}

@@ -1,31 +1,51 @@
 "use client";
 
-import { likePost } from "@/lib/actions/thread.action";
+import { dislikePost, likePost } from "@/lib/actions/thread.action";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface LikeProps {
   id: string;
   currentUserId: string;
+  isLiked: boolean;
+  path: string;
 }
 
-async function Like({ id, currentUserId }: LikeProps) {
+async function Like({ id, currentUserId, isLiked, path }: LikeProps) {
+  const router = useRouter();
+
   //   const userInfo = await fetchUser(currentUserId);
   const handleLikeClick = async () => {
-    console.log(currentUserId);
-    await likePost(id, currentUserId);
+    if (isLiked) {
+      await dislikePost(id, currentUserId, path); // Assuming there's a function to dislike a post
+    } else {
+      await likePost(id, currentUserId);
+    }
+    window.location.reload();
   };
-  // const handleLike = async (id: string, currentUserId: string) => {
-  //   await likePost(id, currentUserId);
-  // };
+
   return (
-    <Heart
-      width={24}
-      height={24}
-      className="cursor-pointer"
-      color="gray"
-      onClick={handleLikeClick}
-    />
+    <>
+      {isLiked ? (
+        <Heart
+          width={24}
+          height={24}
+          className="cursor-pointer"
+          color={"red"}
+          fill="red"
+          onClick={handleLikeClick}
+        />
+      ) : (
+        <Heart
+          width={24}
+          height={24}
+          className="cursor-pointer"
+          color={"gray"}
+          onClick={handleLikeClick}
+        />
+      )}
+    </>
   );
 }
 

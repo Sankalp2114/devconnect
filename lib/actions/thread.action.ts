@@ -136,7 +136,6 @@ export async function likePost(threadId: string, userId: string) {
   try {
     const post = await Thread.findById(threadId);
     if (!post) throw new Error("Post not found");
-    console.log(userId);
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $addToSet: { likedPosts: threadId } },
@@ -152,12 +151,34 @@ export async function likePost(threadId: string, userId: string) {
 export async function fetchLikedPosts(userId: string) {
   connectToDB();
   try {
-    const user = await User.findOne({ id: userId });
+    const user = await User.findById(userId);
     if (!user) {
       throw new Error("User not found");
     }
     return user.likedPosts;
   } catch (error: any) {
     throw new Error(`Error fetching liked posts: ${error.message}`);
+  }
+}
+export async function dislikePost(
+  threadId: string,
+  userId: string,
+  path: string
+) {
+  connectToDB();
+  try {
+    const post = await Thread.findById(threadId);
+    if (!post) throw new Error("Post not found");
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { likedPosts: threadId } },
+      { new: true }
+    );
+    revalidatePath(path);
+
+    return updatedUser;
+  } catch (error: any) {
+    throw new Error(`Error disliking post: ${error.message}`);
   }
 }
