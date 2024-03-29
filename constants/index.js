@@ -6,6 +6,7 @@ import {
   User,
   MessageSquare,
   Pencil,
+  Heart,
 } from "lucide-react";
 
 export const sidebarLinks = [
@@ -36,19 +37,19 @@ export const sidebarLinks = [
   },
   {
     icon: <User color="white" />,
-    route: "/profile",
+    route: `/profile`,
     label: "Profile",
   },
 ];
 
 export const profileTabs = [
-  { value: "threads", label: "Threads", icon: <MessageSquare color="white" /> },
-  { value: "replies", label: "Replies", icon: <Users color="white" /> },
-  { value: "tagged", label: "Tagged", icon: <User color="white" /> },
+  { value: "threads", label: "Threads", icon: <MessageSquare color="grey" /> },
+  { value: "replies", label: "Replies", icon: <Users color="grey" /> },
+  { value: "liked", label: "Liked Threads", icon: <Heart color="grey" /> },
 ];
 
 export const communityTabs = [
-  { value: "threads", label: "Threads", icon: <MessageSquare color="white" /> },
-  { value: "members", label: "Members", icon: <Users color="white" /> },
-  { value: "requests", label: "Requests", icon: <Pencil color="white" /> },
+  { value: "threads", label: "Threads", icon: <MessageSquare color="grey" /> },
+  { value: "members", label: "Members", icon: <Users color="grey" /> },
+  { value: "requests", label: "Requests", icon: <Pencil color="grey" /> },
 ];

@@ -52,7 +52,7 @@ const ThreadCard = async ({
   }
   return (
     <article
-      className={`flex w-full flex-col rounded-xl ${
+      className={`flex w-full flex-col rounded-xl mt-2 ${
         isComment ? "px-2 xs:px-7" : "bg-dark-2 p-7"
       }`}
     >
@@ -77,7 +77,9 @@ const ThreadCard = async ({
               </h4>
             </Link>
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
-            <div className="mt-5 flex flex-col gap-3">
+            <div
+              className={` ${isComment && "mb-10"} mt-5 flex flex-col gap-3`}
+            >
               <div className="flex gap-10">
                 <Like id={id} currentUserId={userDbId} isLiked={isLiked} />
                 <Link href={`/thread/${id}`}>
