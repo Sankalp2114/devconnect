@@ -56,7 +56,7 @@ const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
 
   const handleImage = (
     e: ChangeEvent<HTMLInputElement>,
-    fieldChnage: (value: string) => void
+    fieldChange: (value: string) => void
   ) => {
     e.preventDefault();
     const fileReader = new FileReader();
@@ -69,7 +69,7 @@ const AccountProfile = ({ user, btnTitle }: AccountProfileProps) => {
 
       fileReader.onload = async (event) => {
         const imageDataUrl = event.target?.result?.toString() || "";
-        fieldChnage(imageDataUrl);
+        fieldChange(imageDataUrl);
       };
 
       fileReader.readAsDataURL(file);

@@ -1,10 +1,22 @@
 import AccountProfile from "@/components/forms/AccountProfile";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
+
+interface UserDataProps {
+  id: string | undefined;
+  objectId: string;
+  username: string;
+  name: string;
+  bio: string;
+  image: string;
+}
 
 async function Page() {
   const user = await currentUser();
-  const userInfo = {};
-  const userData = {
+  let userId = "";
+  if (user) userId = user.id;
+  const userInfo = await fetchUser(userId);
+  const userData: UserDataProps = {
     id: user?.id,
     objectId: userInfo?._id,
     username: userInfo?.username || user?.username,
