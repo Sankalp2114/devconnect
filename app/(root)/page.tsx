@@ -23,6 +23,7 @@ export default async function Home() {
               <ThreadCard
                 key={post.id}
                 id={post.id}
+                likes={post.likes}
                 currentUserId={user?.id || ""}
                 parentId={post.parentId}
                 content={post.text}

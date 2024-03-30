@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 
 interface ThreadCardProps {
   id: string;
+  likes: number;
   currentUserId: string;
   parentId: string | null;
   content: string;
@@ -32,6 +33,7 @@ interface ThreadCardProps {
 
 const ThreadCard = async ({
   id,
+  likes,
   currentUserId,
   parentId,
   content,
@@ -81,7 +83,13 @@ const ThreadCard = async ({
               className={` ${isComment && "mb-10"} mt-5 flex flex-col gap-3`}
             >
               <div className="flex gap-10">
-                <Like id={id} currentUserId={userDbId} isLiked={isLiked} />
+                <div className="flex items-center">
+                  <Like id={id} currentUserId={userDbId} isLiked={isLiked} />
+                  <p className=" rounded-ful px-2 py-1 !text-tiny-medium text-light-2">
+                    {likes}
+                  </p>
+                </div>
+
                 <Link href={`/thread/${id}`}>
                   <MessageCircleMore
                     width={24}
