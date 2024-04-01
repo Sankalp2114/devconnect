@@ -122,3 +122,25 @@ export async function fetchUsers({
     throw new Error(`error fetching user: ${error.message}`);
   }
 }
+
+export async function getLogs(userId: string) {
+  try {
+    connectToDB();
+    const userPosts = await Thread.find({ author: userId });
+    const replyIds = userPosts.reduce((acc, userPost) => {
+      return acc.concat(userPost.children);
+    }, []);
+    const replies = await Thread.find({
+      _id: { $in: replyIds },
+      author: { $ne: userId },
+    }).populate({
+      path: "author",
+      model: User,
+      select: "name image _id",
+    });
+
+    return replies;
+  } catch (error: any) {
+    throw new Error(`error fetching logs: ${error.message}`);
+  }
+}
