@@ -202,3 +202,16 @@ export async function fetchLikedPosts(userId: string) {
     throw new Error(`Error fetching liked posts: ${error.message}`);
   }
 }
+
+export async function fetchreplies(userId: string) {
+  try {
+    const threads = await Thread.find({
+      parentId: { $exists: true }, // Posts with a parent
+      author: userId, // Filter by the user ID
+    }).populate("author");
+
+    return threads;
+  } catch (error: any) {
+    throw new Error(`Error fetching posts' children: ${error.message}`);
+  }
+}

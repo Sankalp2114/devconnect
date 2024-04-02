@@ -1,4 +1,5 @@
 import ProfileHeader from "@/components/shared/ProfileHeader";
+import RepliesTab from "@/components/shared/RepliesTab";
 import ThreadsTab from "@/components/shared/ThreadsTab";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
@@ -31,25 +32,26 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 <p className="max-sm:hidden">{tab.label}</p>
                 {tab.label === "Threads" && (
                   <p className="ml-1 rounded-sm bg-[rgb(59,59,255)] px-2 py-1 !text-tiny-medium text-light-2">
-                    {userInfo?.threads?.length}
+                    {userInfo?.threads?.length - 1}
                   </p>
                 )}
               </TabsTrigger>
             ))}
           </TabsList>
-          {profileTabs.map((tab) => (
-            <TabsContent
-              key={`content-${tab.label}`}
-              value={tab.value}
-              className="w-full text-light-1"
-            >
-              <ThreadsTab
-                currentUserId={user.id}
-                accountId={userInfo.id}
-                accountType="User"
-              />
-            </TabsContent>
-          ))}
+          <TabsContent value="threads" className="w-full text-light-1">
+            <ThreadsTab
+              currentUserId={user.id}
+              accountId={userInfo.id}
+              accountType="User"
+            />
+          </TabsContent>
+          <TabsContent value="replies" className="w-full text-light-1">
+            <RepliesTab
+              currentUserId={user.id}
+              accountType="User"
+              profileid={params.id}
+            />
+          </TabsContent>
         </Tabs>
       </div>
     </section>

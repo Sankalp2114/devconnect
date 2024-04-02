@@ -85,7 +85,11 @@ const ThreadCard = async ({
             >
               <div className="flex gap-10">
                 <div className="flex items-center">
-                  <Like id={id} currentUserId={userDbId} isLiked={isLiked} />
+                  <Like
+                    id={id}
+                    currentUserId={String(userDbId)}
+                    isLiked={isLiked}
+                  />
                   <p className=" rounded-ful px-2 py-1 !text-tiny-medium text-light-2">
                     {likes}
                   </p>
