@@ -4,7 +4,7 @@ import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 interface UserDataProps {
-  id: string | undefined;
+  id: string;
   objectId: string;
   username: string;
   name: string;
@@ -17,8 +17,9 @@ async function Page() {
   let userId = "";
   if (user) userId = user.id;
   const userInfo = await fetchUser(userId);
+  if (!user) redirect("/sing-in");
   const userData: UserDataProps = {
-    id: user?.id,
+    id: user.id,
     objectId: userInfo?._id,
     username: userInfo?.username || user?.username,
     name: userInfo?.name || user?.firstName || "",

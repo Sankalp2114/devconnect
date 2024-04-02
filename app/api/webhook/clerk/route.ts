@@ -121,6 +121,7 @@ export const POST = async (request: Request) => {
     try {
       const { organization, public_user_data } = evnt?.data;
       console.log("removed", evnt?.data);
+      // @ts-ignore
 
       await removeUserFromCommunity(public_user_data.user_id, organization.id);
 
@@ -158,6 +159,7 @@ export const POST = async (request: Request) => {
     try {
       const { id } = evnt?.data;
       console.log("deleted", evnt?.data);
+      // @ts-ignore
 
       await deleteCommunity(id);
 
