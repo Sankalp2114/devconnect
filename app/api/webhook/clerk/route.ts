@@ -54,6 +54,7 @@ export const POST = async (request: Request) => {
   if (eventType === "organization.created") {
     const { id, name, slug, logo_url, image_url, created_by } =
       evnt?.data ?? {};
+    const bio = `Welcome to ${name}`;
 
     try {
       // @ts-ignore
@@ -63,7 +64,7 @@ export const POST = async (request: Request) => {
         name,
         slug,
         logo_url || image_url,
-        "org bio",
+        bio,
         created_by
       );
 
