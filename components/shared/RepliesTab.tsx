@@ -16,7 +16,8 @@ const RepliesTab = async ({
   profileid,
 }: ThreadsTabProps) => {
   const userInfo = await fetchUser(currentUserId);
-  const res = await fetchreplies(userInfo._id);
+  const profile = await fetchUser(profileid);
+  const res = await fetchreplies(profile._id);
 
   if (!res) redirect("/");
 
