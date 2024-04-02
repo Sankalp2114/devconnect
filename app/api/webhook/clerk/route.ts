@@ -54,7 +54,7 @@ export const POST = async (request: Request) => {
   if (eventType === "organization.created") {
     const { id, name, slug, logo_url, image_url, created_by } =
       evnt?.data ?? {};
-    const bio = `Welcome to ${name}`;
+    const bio = `Welcome to ${name} community`;
 
     try {
       // @ts-ignore

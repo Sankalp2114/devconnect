@@ -24,6 +24,7 @@ export async function createCommunity(
     if (!user) {
       throw new Error("User not found");
     }
+    console.log(bio);
 
     const newCommunity = new Community({
       id,
