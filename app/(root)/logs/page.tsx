@@ -31,7 +31,7 @@ const page = async () => {
                     <span className="mr-1 text-primary-500">
                       {reply.author.name}
                     </span>
-                    commented: {reply.text}
+                    commented on one of your posts
                   </p>
                 </article>
               </Link>
