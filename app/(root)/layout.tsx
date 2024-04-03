@@ -6,6 +6,7 @@ import TopBar from "@/components/shared/TopBar";
 import BottomBar from "@/components/shared/BottomBar";
 import LeftSideBar from "@/components/shared/LeftSideBar";
 import RightSideBar from "@/components/shared/RightSideBar";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             <LeftSideBar />
             <section className="main-container">
               <div className="w-full max-w-4xl">{children}</div>
+              <Analytics />
             </section>
             <RightSideBar />
           </main>
