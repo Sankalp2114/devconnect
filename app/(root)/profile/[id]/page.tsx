@@ -34,7 +34,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 <p className="max-sm:hidden">{tab.label}</p>
                 {tab.label === "Threads" && (
                   <p className="ml-1 rounded-sm bg-[rgb(59,59,255)] px-2 py-1 !text-tiny-medium text-light-2">
-                    {userInfo?.threads?.length - 1}
+                    {userInfo?.threads?.length}
                   </p>
                 )}
               </TabsTrigger>

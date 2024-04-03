@@ -32,7 +32,7 @@ interface ThreadCardProps {
   userDbId: string;
 }
 
-const ThreadCard: React.FC<ThreadCardProps> = ({
+const ThreadCard: React.FC<ThreadCardProps> = async ({
   id,
   likes,
   currentUserId,
@@ -45,18 +45,18 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
   isComment,
   userDbId,
 }) => {
-  let isLiked = false;
-
+  let isLiked: boolean;
   const fetchLikedPostsData = async () => {
     try {
       let likedPosts = await fetchLikedPosts(userDbId);
+
       isLiked = likedPosts.includes(id);
     } catch (error) {
       console.error("Error fetching liked posts:", error);
     }
   };
 
-  fetchLikedPostsData();
+  await fetchLikedPostsData();
 
   return (
     <article
