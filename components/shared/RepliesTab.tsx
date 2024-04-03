@@ -48,7 +48,6 @@ const RepliesTab = async ({
           createdAt={thread.createdAt}
           comments={thread.children}
           likes={thread.likes}
-          profileid={profileid}
         />
       ))}
     </section>

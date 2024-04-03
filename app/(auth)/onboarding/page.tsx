@@ -17,7 +17,7 @@ async function Page() {
   let userId = "";
   if (user) userId = user.id;
   const userInfo = await fetchUser(userId);
-  if (!user) redirect("/sing-in");
+  if (!user) redirect("/sign-in");
   const userData: UserDataProps = {
     id: user.id,
     objectId: userInfo?._id,
@@ -26,7 +26,7 @@ async function Page() {
     bio: userInfo?.bio || "",
     image: userInfo?.image || user?.imageUrl,
   };
-  if (userInfo.onboarded) redirect("/");
+  if (userInfo?.onboarded) redirect("/");
   return (
     <main className="mx-auto flex max-w-3xl flex-col justify-start px-10 py-20">
       <h1 className="head-text"> OnBoarding</h1>

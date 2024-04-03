@@ -11,9 +11,7 @@ interface LikeProps {
   isLiked: boolean;
 }
 
-async function Like({ id, currentUserId, isLiked }: LikeProps) {
-  const router = useRouter();
-
+function Like({ id, currentUserId, isLiked }: LikeProps) {
   const handleLikeClick = async () => {
     if (isLiked) {
       await dislikePost(id, currentUserId);

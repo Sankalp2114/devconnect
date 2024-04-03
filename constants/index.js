@@ -51,5 +51,4 @@ export const profileTabs = [
 export const communityTabs = [
   { value: "threads", label: "Threads", icon: <MessageSquare color="grey" /> },
   { value: "members", label: "Members", icon: <Users color="grey" /> },
-  { value: "requests", label: "Requests", icon: <Pencil color="grey" /> },
 ];

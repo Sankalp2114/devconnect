@@ -1,6 +1,8 @@
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import RepliesTab from "@/components/shared/RepliesTab";
 import ThreadsTab from "@/components/shared/ThreadsTab";
+import LikedPostsTab from "@/components/shared/LikedPostsTab";
+
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
 import { fetchUser } from "@/lib/actions/user.actions";
@@ -47,6 +49,13 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </TabsContent>
           <TabsContent value="replies" className="w-full text-light-1">
             <RepliesTab
+              currentUserId={user.id}
+              accountType="User"
+              profileid={params.id}
+            />
+          </TabsContent>
+          <TabsContent value="liked" className="w-full text-light-1">
+            <LikedPostsTab
               currentUserId={user.id}
               accountType="User"
               profileid={params.id}

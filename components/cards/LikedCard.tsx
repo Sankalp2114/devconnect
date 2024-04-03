@@ -1,16 +1,22 @@
-import { fetchLikedPosts, likePost } from "@/lib/actions/thread.action";
+import {
+  fetchLikedPosts,
+  fetchPostById,
+  likePost,
+} from "@/lib/actions/thread.action";
 import { Heart, MessageCircleMore, Repeat2, Share2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Like from "../buttons/Like";
 import { usePathname } from "next/navigation";
 import { formatDateString } from "@/lib/utils";
+import { userInfo } from "os";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 interface ThreadCardProps {
   id: string;
   likes: number;
   currentUserId: string;
-  parentId: string | null;
+  parentId: string;
   content: string;
   author: {
     name: string;
@@ -30,9 +36,33 @@ interface ThreadCardProps {
   }[];
   isComment?: boolean;
   userDbId: string;
+  profileInfo: {
+    _id: string;
+    id: string;
+    __v: number;
+    bio: string;
+    communities: {
+      _id: string;
+      id: string;
+      username: string;
+      name: string;
+      image: string;
+      bio: string;
+      createdBy: string;
+      threads: string[];
+      members: any[];
+      __v: number;
+    }[];
+    image: string;
+    name: string;
+    onboarded: boolean;
+    threads: string[];
+    username: string;
+    likedPosts: string[];
+  };
 }
 
-const ThreadCard: React.FC<ThreadCardProps> = ({
+const LikedCard = async ({
   id,
   likes,
   currentUserId,
@@ -44,20 +74,16 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
   comments,
   isComment,
   userDbId,
-}) => {
+  profileInfo,
+}: ThreadCardProps) => {
   let isLiked = false;
-
-  const fetchLikedPostsData = async () => {
-    try {
-      let likedPosts = await fetchLikedPosts(userDbId);
-      isLiked = likedPosts.includes(id);
-    } catch (error) {
-      console.error("Error fetching liked posts:", error);
-    }
-  };
-
-  fetchLikedPostsData();
-
+  try {
+    let likedPosts = await fetchLikedPosts(profileInfo._id);
+    isLiked = likedPosts.includes(id);
+  } catch (error) {
+    console.error("Error fetching liked posts:", error);
+  }
+  const postInfo = await fetchPostById(parentId);
   return (
     <article
       className={`flex w-full flex-col rounded-xl mt-2 ${
@@ -66,13 +92,12 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
     >
       <div className="flex items-start justify-between">
         <div className="flex w-full flex-1 flex-row gap-4">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center ">
             <Link href={`/profile/${author.id}`} className="relative h-11 w-11">
               <Image
                 src={author.image}
                 alt="profile pic"
-                width={44}
-                height={44}
+                fill
                 className="cursor-pointer rounded-full"
               />
             </Link>
@@ -80,13 +105,15 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
             <div className="thread-card_bar" />
           </div>
           <div className="flex w-full flex-col">
-            <Link href={`/profile/${author.id}`} className="w-fit">
-              <h4 className="cursor-pointer text-base-semibold text-light-1">
+            <Link href={`?profile/${author.id}`} className="w-fit">
+              <h4 className="cursor-pointer text-base-semibold text-light-1 ">
                 {author.name}
               </h4>
             </Link>
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
-            <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
+            <div
+              className={` ${isComment && "mb-10"} mt-5 flex flex-col gap-3`}
+            >
               <div className="flex gap-10">
                 <div className="flex items-center">
                   <Like
@@ -94,7 +121,7 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
                     currentUserId={String(userDbId)}
                     isLiked={isLiked}
                   />
-                  <p className="rounded-full px-2 py-1 !text-tiny-medium text-light-2">
+                  <p className=" rounded-ful px-2 py-1 !text-tiny-medium text-light-2">
                     {likes}
                   </p>
                 </div>
@@ -122,7 +149,7 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
               </div>
               {isComment && comments.length > 0 && (
                 <Link href={`/thread/${id}`}>
-                  <p className="mt-1 text-subtle-medium text-gray-1">
+                  <p className="mt-1 text-subtle-medium text-gray-1 ">
                     {comments.length} replies
                   </p>
                 </Link>
@@ -148,29 +175,8 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
           />
         </Link>
       )}
-
-      {!isComment && comments.length > 0 && (
-        <div className="ml-1 mt-3 flex items-center gap-2">
-          {comments.slice(0, 2).map((comment, index) => (
-            <Image
-              key={index}
-              src={comment.author.image}
-              alt={`user_${index}`}
-              width={24}
-              height={24}
-              className={`${index !== 0 && "-ml-5"} rounded-full object-cover`}
-            />
-          ))}
-
-          <Link href={`/thread/${id}`}>
-            <p className="mt-1 text-subtle-medium text-gray-1">
-              {comments.length} repl{comments.length > 1 ? "ies" : "y"}
-            </p>
-          </Link>
-        </div>
-      )}
     </article>
   );
 };
 
-export default ThreadCard;
+export default LikedCard;
